@@ -151,7 +151,7 @@ const Home = ()=>{
                     <p> {item.body} </p>
                     {
                         item.comments.map(record=>{
-                            // console.log(record)
+                             console.log(record)
                              return(
                                 <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text} 
                                  </h6> 
