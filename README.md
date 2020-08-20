@@ -1,2 +1,3 @@
-# Instafam-backend
-The backend files for my Instafam project , will update the Readme very soon...
+# Instafam-full-stack
+It is just the combined version of my previous two apps . Uploaded just for deployment purpose
+
