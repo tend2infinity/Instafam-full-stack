@@ -1,6 +1,7 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {UserContext} from '../App'
 import {Link} from 'react-router-dom'
+import M from 'materialize-css';
 
 const Home = ()=>{
     const [data,setData] = useState([])
@@ -108,7 +109,30 @@ const Home = ()=>{
                 return item._id !== result._id
             })
             setData(newData)
+            M.toast({html: 'Post deleted', classes:"#e53935 red darken-1"})
         })
+    }
+    const deleteComment = (...props) => {
+       fetch(`deletecomment/${props[1]}/${props[0]}`,{
+        method:"delete",
+        headers:{
+            Authorization:"Bearer "+localStorage.getItem("jwt")
+        }
+       }).then(res => res.json())
+       .then(result => {
+           const newData = data.map(item => {
+               if (item._id == result._id){
+                return result
+               }
+               else{
+                return item
+               }  
+           })
+           setData(newData)
+           M.toast({html: 'Comment deleted', classes:"#e53935 red darken-1"})
+       }).catch(err=>{
+        console.log(err)
+    })
     }
 
     return (
@@ -151,10 +175,21 @@ const Home = ()=>{
                     <p> {item.body} </p>
                     {
                         item.comments.map(record=>{
-                             console.log(record)
                              return(
-                                <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text} 
-                                 </h6> 
+                                 <div>
+                                    <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text} 
+                                    
+                                    {record.postedBy._id == state._id
+                                    && <i className="material-icons" 
+                                    style={{
+                                        float:"right"
+                                    }}
+                                    onClick = {()=>deleteComment(record._id, item._id)}
+                                    >delete</i>
+                                    } 
+                                    </h6> 
+                                 </div>    
+                                
                              )
                         })
                     } 

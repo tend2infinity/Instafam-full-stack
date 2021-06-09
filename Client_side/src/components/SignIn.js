@@ -39,9 +39,9 @@ const SignIn = ()=>{
                 M.toast({html:"signed in successfully" , classes:"#43a047 green darken-1"})
                 history.push('/')
             }
-        }).catch(err=>{
+        }).catch(err=>
             console.log(err)
-        })
+        )
     }
     return (
         <div className="mycard">

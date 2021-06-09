@@ -134,21 +134,20 @@ router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
     })
 })
 
-router.delete('/deletecomment/:comments.postedBy._id',requireLogin,(req,res)=>{
-    Post.findOne({_id:req.params.comments.postedBy._id})
+
+router.delete('/deletecomment/:postId/:commentId',requireLogin,(req,res)=>{
+    Post.findByIdAndUpdate({_id:req.params.postId},{
+        $pull:{comments:{_id : req.params.commentId}}
+    },{
+        new:true
+    })
     .populate("comments.postedBy","_id name")
-    .populate("postedBy","_id")
-    .exec((err,comments)=>{
-        if(err || !comments){
+    .exec((err,post)=>{
+        if(err || !post){
             return res.status(422).json({error:err})
         }
-        if(post.comments.postedBy._id.toString() === req.user._id.toString()){
-            post.comments.remove()
-            .then(result=>{
-                res.json(result)
-            }).catch(err=>{
-                console.log(err)
-            })
+        else{
+            res.json(post)
         }
     })
 })
